@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>clock</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+    <style>
+        *{
+            user-select: none;
+        }
+
+        body{
+            height: 100vh;
+            background-image: linear-gradient(rgb(181, 238, 238),white)
+        }
+        p{
+            margin:0;
+            height: auto;
+            font-size: 7rem;
+            color:hsl(0, 0%, 100%);
+            
+        }
+        .container{
+            box-shadow: 0 0 0.8rem 0 black;
+            border-radius: 0.6rem;
+            padding:1.7rem;
+            position: absolute;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+
+        }
+        .clock{
+            box-shadow: 0 0 0.4rem 0 black;
+            border-radius: 0.6rem;
+            padding:1rem;
+            background-color: black;
+        }
+        .buttons{
+            margin-top: 1.7rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        button{
+            width: 5rem;
+            height: 2rem;
+            background-color:#fff;
+            border-radius: 7px;
+            font-weight: 800;
+            cursor: pointer;
+            -webkit-transition:all 0.4s ease-out 0s ;
+            -o-transition: all 0.4s ease-out 0s;
+            -moz-transition: all 0.4s ease-out 0s;
+            transition: all 0.4s ease-out 0s;
+        }
+        
+        button:hover:not(#stopwatch,#timer){
+            box-shadow: inset 0 0 7px 2px black;
+        }
+
+
+        #customize{
+            width: auto !important;
+            height: auto !important;
+            background-color:black;
+            border-radius: 7px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            box-shadow: unset;
+            cursor: pointer;
+            float:right;
+            color:rgb(231, 229, 229);
+            -webkit-transition:all 0.4s ease-out 0s ;
+            -o-transition: all 0.4s ease-out 0s;
+            -moz-transition: all 0.4s ease-out 0s;
+            transition: all 0.4s ease-out 0s;
+            
+        }
+
+        #customize:hover{
+            background-color:#fff;
+            color:black
+        }
+        .head{
+            margin-bottom: 0.7rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #time{
+            flex-grow: 1;
+        }
+        #stopwatch{
+            width: auto !important;
+            margin-right: 3px;
+            background-image: linear-gradient(rgb(181, 238, 238),white);
+            border:unset;
+        }
+
+        #stopwatch i{
+            margin-top: 3px;
+            margin-right: 4px;
+        }
+        #timer{
+            background-image: linear-gradient(rgb(181, 238, 238),white);
+            border:unset;
+        }
+
+        #timer i{
+            margin-top: 3px;
+            margin-right: 4px;
+        }
+
+        #stopwatch:hover{
+            box-shadow: 0 0 5px 2px #fff;
+        }
+
+        #stopwatch.active{
+            box-shadow: 0 0 3px 1px #fff;
+        }
+
+        #timer:hover{
+            box-shadow: 0 0 5px 2px #fff;
+        }
+
+        #timer.active{
+            box-shadow: 0 0 3px 1px #fff;
+        }
+
+        #timer.active{
+            box-shadow: 0 0 3px 1px #fff;
+        }
+
+        #flaglist{
+            margin-top: 1.5rem;  
+        }
+
+        #list{
+            display: none;
+            list-style-type:none;
+            margin:0;
+            padding:0;
+        }
+
+        #list li{
+            background-image: linear-gradient(135deg,white,rgb(170, 233, 233));
+            box-shadow: 0 0 4px 0 black;
+            padding-top:0.3rem;
+            padding-bottom: 0.7rem;
+            height: 1rem;
+            border-radius: 0.3rem;
+            font-size: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        #list li:not(:last-of-type){
+            margin-bottom: 0.7rem;
+        }
+
+        #list i{
+            float:right;
+            margin-right: 1rem;
+        }
+
+        i{
+            cursor: pointer;
+        }
+
+        #clockIcon{
+            width: auto !important;
+            height: auto !important;
+            background-color:black;
+            border-radius: 7px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            box-shadow: unset;
+            cursor: pointer;
+            padding: 3px 3px initial 3px !important;
+            color:rgb(231, 229, 229);
+            -webkit-transition:all 0.4s ease-out 0s ;
+            -o-transition: all 0.4s ease-out 0s;
+            -moz-transition: all 0.4s ease-out 0s;
+            transition: all 0.4s ease-out 0s;
+        }
+
+        #clockIcon:hover{
+            background-color:#fff;
+            color:black
+        }
+
+
+        #stopwatchPanel{
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #btn{
+            font-size: 2rem;
+            color: blue;
+            margin-left: 18px;
+            padding-top: 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        #playButton{
+            display: none;
+        }
+
+        #pauseButton{
+            margin-left: 10px;
+            display: none;
+        }
+
+        #flag{
+            margin-left: 10px;
+            display: none;
+        }
+
+        #ban{
+            font-size: 2.335rem;
+            display: none;
+        }
+
+        #ban i{
+            margin-top: 7px;
+        }
+
+        i{
+            transition: all 0.4s ease-out 0s;
+        }
+
+        #timerBox{
+            position: absolute;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%,-50%) scale(0);
+            background-image: linear-gradient(135deg,white,rgb(170, 233, 233));
+            width: 150px;
+            padding:0.9rem;
+            box-shadow: 0 0 4px 0 #fff;
+            border-radius:5px;
+            font-size: 1.2rem;
+            -webkit-transition:all 0.4s ease-out 0s ;
+            -o-transition: all 0.4s ease-out 0s;
+            -moz-transition: all 0.4s ease-out 0s;
+            transition: all 0.4s ease-out 0s;
+        }
+
+        #timerBox > div{
+            border-radius:5px;
+            box-shadow: 0 0 3px 0 black;
+            padding: 0.4rem;
+        }
+
+        #timerBox > div strong{
+            margin-left: 8px;
+        }
+        
+        #inputArea{
+            margin-top: 5px;
+        }
+        input:focus{
+            border: unset;
+            outline: unset;
+            box-shadow: unset;
+            box-shadow: 0 0 4px 1px lightslategrey;
+        }
+
+        input{
+            border:unset;
+            border-radius: 3px;
+            height: 2rem;
+            width: 3rem !important;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        #inputArea span{
+            font-size: 1.7rem;
+            margin: initial 8px;
+        }
+        #inputArea{
+            text-align: center;
+        }
+
+        #dialogBox{
+            margin:6px;
+        }
+    </style>
+</head>
+<body>
+    <!-- documents body start -->
+    <div class="container">
+        <div class="clock">
+            <div class="head">
+            <button id="customize"><i class="uil uil-chart-pie-alt"></i></button>
+            <div id="feature">
+                <button id="stopwatch"><i class="uil uil-stopwatch"></i>Stopwatch</button>
+                <button id="timer" onclick="timerClock()"><i class="uil uil-hourglass"></i>Timer</button>
+            </div>
+            </div>
+            <div id="stopwatchPanel">
+                <p id="demo"></p>
+                <span id="btn">
+                    <span id="ban"><i class="uil uil-ban"></i></span>
+                    <i id="pauseButton" class="bi bi-pause-circle"></i>
+                    <i id="playButton" class="bi bi-play-circle"></i>
+                    <i id="flag" class="bi bi-flag"></i>
+                </span>
+            </div>
+        </div> 
+        <div id="flaglist">
+            <ul id="list">
+            </ul>
+        </div>
+    </div>
+
+    <div id="timerBox">
+        <div>
+            <strong>Timer</strong>
+            <div class="dialogBox">
+                <div id="inputArea">
+                <input  maxlength="2" max="60" autofocus placeholder="M" size="8" id="minute" type="text"><span>:</span>
+                <input  placeholder="S" maxlength="2" size="5" id="second" type="text">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- documents body ends -->
+    
+
+
+
+    <script>
+        //declaring variables
+        var flag = document.getElementById("flag");
+        var playButton = document.getElementById("playButton");
+        var pauseButton = document.getElementById("pauseButton");
+        var stopwatch = document.getElementById("stopwatch");
+        var timer = document.getElementById("timer");
+        var func = document.getElementById("feature");
+        var element = document.getElementById("demo");
+        var h = document.querySelector(".head");
+        var reset = document.getElementById("ban");
+        var list = document.getElementById("list");
+        var popUp = document.getElementById("timerBox");
+        var mValue = document.getElementById("minute");
+        var sValue = document.getElementById("second");
+        let minuteValue;
+        let secondValue;
+        let lapArray;
+        let initial;
+        var ticking;
+        var lap;
+        window.addEventListener("onreload",()=>{
+            timer.classList.remove("called");
+            stopwatch.classList.remove("called");
+            playButton.classList.remove("called");
+        })
+        ticking =  setInterval(function(){
+            var time = new Date();
+           element.innerText  =  time.getHours()+":"+time.getMinutes()+":"+time.getSeconds();
+        },1000);
+        //customize button and adding evetn listeners to all buttons
+        var custom = document.getElementById("customize");
+        custom.addEventListener('click',()=>{
+            //hiding the custom button
+            custom.style.display="none";
+            //hiding the fuction keys like stopwatch and timer
+            func.style.display="none";
+            //adding show clock button and activating the customize button
+            initial = `<button id="time">Show clock</button>`;
+             h.insertAdjacentHTML("afterbegin",initial);
+            clearInterval(ticking);
+            element.style.width = "350px";
+            //adding feature buttons to the clock
+            document.querySelector("#time").addEventListener('click',()=>{
+                custom.style.display="initial";
+                document.querySelector("#time").remove();
+                showClock();
+            })
+            // showing clock or each reload
+            element.innerHTML = `<div class="buttons">
+            <button id="date">Date</button>
+            <button id="hour">Hour</button>
+            <button id="minute">Minute</button>
+            <button id="seconds">Seconds</button>
+            </div>`
+            //adding eventlistener to every menu button
+             var feature = document.getElementsByClassName("buttons")[0].querySelectorAll("button");
+             feature.forEach(btn =>{
+                btn.addEventListener('click', () =>{
+                    custom.style.display="initial";
+                    document.getElementById("time").remove();
+                    element.style.width = "auto";
+                    var identity = btn.id;
+                    switch(identity){
+                        case "date":
+                            element.style.fontSize = "2rem";
+                            ticking = setInterval(function(){
+                                    var time = new Date();
+                                    element.innerText  =  time.toDateString();
+                            },1000);
+                            break;
+                        case "hour":
+                            element.style.fontSize = "2rem";
+                            ticking = setInterval(function(){
+                                    var time = new Date();
+                                    element.innerText  =  time.getHours()+" hrs";
+                            },1000);
+                            break;
+                        case "minute":
+                            element.style.fontSize = "2rem";
+                            ticking = setInterval(function(){
+                                    var time = new Date();
+                                    element.innerText  =  time.getMinutes()+" minutes";
+                            },1000);
+                            break;
+                        default:
+                            element.style.fontSize = "2rem";
+                            ticking = setInterval(function(){
+                                    var time = new Date();
+                                    element.innerText  =  time.getSeconds()+" seconds";
+                            },1000);
+                    }
+                })
+            })
+
+        })
+
+
+        //stopwatch
+        stopwatch.addEventListener('click',()=>{
+            clearInterval(ticking);
+            lapArray = [];
+            element.style.fontSize="2.4rem";
+            element.innerText = "00:00.00";
+            element.style.width = "136.547px"
+            var milliSecond = 0, second =0, minute=0;
+            timer.style.display="none";
+            custom.style.display ="none";
+            if(!stopwatch.classList.contains("called")){
+                console.log("inside");
+                    playButton.addEventListener('click',()=>{
+                    var check = playButton.classList.contains("active");
+                    if(!check){
+                        playButton.style.display = "none"
+                        flag.style.display = "initial";
+                        pauseButton.style.display = "initial"
+                        reset.style.display = "initial"
+                        ticking = setInterval(function(){
+                            milliSecond+=1;
+                            if(milliSecond == 100){
+                                second+=1;
+                                milliSecond=0;
+                            }
+                            if(second == 60){
+                                minute+= 1;
+                                second = 0;
+                                milliSecond = 0;
+                            }
+                            lap = `${minute}:${second}.${milliSecond}`
+                            element.innerText = lap;
+                        },10)
+                        playButton.classList.add("active");
+                        if(!playButton.classList.contains("called")){
+                                reset.addEventListener('click',()=>{
+                                clearInterval(ticking);
+                                playButton.classList.remove("active");
+                                element.innerText = "00:00.00";
+                                playButton.style.display = "initial"
+                                pauseButton.style.display = "none"
+                                flag.style.display = "none";
+                                reset.style.display ="none";
+                            })
+
+                            pauseButton.addEventListener("click",()=>{
+                                clearInterval(ticking);
+                                playButton.style.display = "initial";
+                                playButton.style.marginLeft = "10px";
+                                pauseButton.style.display = "none";
+                            })
+                            
+                            flag.addEventListener('click',()=>{
+                                lapArray.unshift(lap);
+                                console.log(lap);
+                                console.log(lapArray);
+                                showLaps();
+                            })
+                            playButton.classList.add("called");
+                        }
+                    }else{
+                        console.log("worked");
+                        clearInterval(ticking);
+                        playButton.style.marginLeft = "initial";
+                        playButton.style.display = "none";
+                        pauseButton.style.display = "initial";
+                        ticking = setInterval(function(){
+                            milliSecond+=1;
+                            if(milliSecond == 100){
+                                second+=1;
+                                milliSecond=0;
+                            }
+                            if(second == 60){
+                                minute+= 1;
+                                second = 0;
+                                milliSecond = 0;
+                            }
+                            lap = `${minute}:${second}.${milliSecond}`
+                            element.innerText = lap;
+                        },10)
+                    }
+                })
+                stopwatch.classList.add("called");
+            }
+
+            if(!stopwatch.classList.contains("active")){
+                playButton.style.display = "initial"
+                var clockIcon = '<i id="clockIcon" class="uil uil-clock-two"></i>';
+                 h.insertAdjacentHTML("afterbegin",clockIcon);
+            }
+            stopwatch.classList.add("active");
+            var home = document.getElementById("clockIcon");
+            home.addEventListener('click',()=>{
+                if(stopwatch.classList.contains("active")){
+                    playButton.classList.remove("active");
+                    stopwatch.classList.remove("active");
+                    playButton.style.display="none";
+                    pauseButton.style.display="none";
+                    flag.style.display = "none";
+                    custom.style.display ="initial";
+                    list.style.display = "none";
+                    lapArray = undefined;
+                    home.remove();
+                    showClock();
+                }
+            })
+            
+        })
+
+        //funciton for showing clock
+        function showClock(){
+                clearInterval(ticking);
+                stopwatch.style.display = "initial";
+                reset.style.display ="none";
+                timer.style.display="initial";
+                func.style.display="initial";
+                element.style.fontSize = "7rem";
+                element.style.width = "auto";
+                ticking = setInterval(function(){
+                    var time = new Date();
+                    element.innerText  =  time.getHours()+":"+time.getMinutes()+":"+time.getSeconds();
+                },1000);
+        }
+
+        //showing laps
+
+        function showLaps(){
+            var liTag="";
+            lapArray.forEach((value,index)=>{
+                liTag += `<li>${value}<i id="${index}" onclick='delteLap(this)' class="uil uil-minus-circle"></i></li>`;
+            })
+            list.innerHTML = liTag;
+            list.style.display = "initial";
+        }
+
+        function delteLap(obj){
+            lapArray.splice(obj.id,1);
+            showLaps();
+        }
+
+        //Timer
+        function timerClock(){
+            mValue.value="";
+            sValue.value="";
+            minuteValue=undefined;
+            secondValue=undefined;
+            popUp.style.transform = "translate(-50%,-50%) scale(1)";
+
+        }
+
+        document.addEventListener('click',removePopUp )
+
+        function removePopUp(e){
+            if(!popUp.contains(e.target) && e.target != popUp && e.target != timer){
+                  popUp.style.transform = "translate(-50%,-50%) scale(0)";   
+            }
+        }
+
+        mValue.addEventListener('keyup', e =>{
+            minuteValue = mValue.value.trim();
+            if(e.key == "Enter" && minuteValue){
+                if(Number.isInteger(Number(minuteValue))){
+                    startTimer();
+                    popUp.style.transform = "translate(-50%,-50%) scale(0)";
+                }else{
+                    window.alert("Enter valid time");
+                    mValue.value="";
+                    minuteValue = undefined;
+                }
+            }
+        })
+
+        sValue.addEventListener('keyup', e =>{
+            secondValue = sValue.value.trim();
+            if(e.key == "Enter" && secondValue){
+                if(Number.isInteger(Number(secondValue))){
+                    startTimer();
+                    popUp.style.transform = "translate(-50%,-50%) scale(0)";
+                }else{
+                    window.alert("Enter valid time");
+                    sValue.value="";
+                    secondValue = undefined;
+                }
+            }
+        })
+
+        function startTimer(){
+            var home;
+            if(!timer.classList.contains("active")){
+                var clockIcon = '<i id="clockIcon" class="uil uil-clock-two"></i>';
+                h.insertAdjacentHTML("afterbegin",clockIcon);
+                home = document.getElementById("clockIcon");
+            }
+            if(!timer.classList.contains("called")){
+                home.addEventListener('click',()=>{
+                    if(timer.classList.contains("active")){
+                        timer.classList.remove("active");
+                        custom.style.display ="initial";
+                        home.remove();
+                        showClock();
+                    }
+                })
+                timer.classList.add("called");
+            }
+            custom.style.display ="none";
+            timer.classList.add("active");
+            element.style.width = "136.547px"
+            element.style.fontSize="2.4rem";
+            stopwatch.style.display = "none";
+            clearInterval(ticking);
+            if(!minuteValue) minuteValue = 00;
+            if(!secondValue){
+                minuteValue -= 1;
+                secondValue = 60;
+            }
+            if(secondValue > 60){
+                minuteValue += 1;
+                secondValue -= 60;
+            }
+            ticking = setInterval(function(){
+                element.innerText  =  minuteValue+":"+secondValue;
+                if(secondValue == 0){
+                    if(minuteValue == 0 && secondValue == 0){
+                        home.remove();
+                        timer.classList.remove("active");
+                        window.alert("Time's Up");
+                        custom.style.display ="initial";
+                        showClock();
+                    }else{
+                        secondValue = 60;
+                        minuteValue -= 1;
+                    }
+                }
+                secondValue -= 1;
+            },1000);
+        }
+    </script>
+</body>
+</html>
